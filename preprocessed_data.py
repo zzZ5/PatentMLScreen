@@ -2,13 +2,14 @@ import pandas
 import re
 import jieba
 from nltk.corpus import stopwords
+from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # 导入数据
-df = pandas.read_csv("patent_verified.csv")
+df = pandas.read_csv("data/patents.csv")
 df["x"] = df["Application Id"].map(str) + " " + df["Application Date"].map(str) + " " + df["Publication Date"].map(str) + " " + df["Country"].map(str) + " " + df["Title"].map(str) + " " + df["Abstract"].map(str) + " " + df["Applicants"].map(str) + " " + df["Inventors"].map(str)
 patents = df["x"].values.tolist()
-labels = df["y"].values.tolist()
+# labels = df["y"].values.tolist()
 
 # 清洗数据
 
@@ -46,5 +47,4 @@ for text in patents:
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(processed_texts)
 
-data_
-tfidf_matrix.toarray()
+sparse.save_npz("data/patents_tfidf_matrix.npz", tfidf_matrix)
